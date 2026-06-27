@@ -17,7 +17,7 @@ export function urlFor(source: any){
 
 export async function getAllData(){
     const query = `
-    *[_type == 'blog'] | order(_createdAt desc) {
+    *[_type == 'notes'] | order(_createdAt desc) {
       title,
       smallDescription,
       "currentSlug": slug.current,
