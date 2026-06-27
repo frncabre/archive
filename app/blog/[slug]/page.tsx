@@ -1,0 +1,67 @@
+import { notFound } from "next/navigation";
+import Image from "next/image";
+import { PortableText, type PortableTextComponents } from "@portabletext/react";
+import { client, getArticle, urlFor } from "@/app/lib/sanity";
+import Navbar from "@/app/components/Navbar";
+
+const ptComponents: PortableTextComponents = {
+    block: {
+        h2: ({ children }) => (
+            <h2 className="font-serif text-2xl text-black mt-10 mb-4">
+                {children}
+            </h2>
+        ),
+        normal: ({ children }) => (
+            <p className="font-serif text-[1.05rem] text-black/80 leading-[1.75] mb-6">
+                {children}
+            </p>
+        ),
+    },
+};
+
+export default async function BlogArticle({
+    params,
+}: {
+    params: Promise<{ slug: string }>;
+}) {
+    const { slug } = await params;
+    const data = await getArticle(slug);
+
+    if (!data) {
+        notFound();
+    }
+
+    return (
+        <>
+            <Navbar />
+            <main className="max-w-2xl mx-auto px-4 pt-14 pb-24">
+
+                <header className="mb-10">
+                    <h1 className="font-serif text-3xl text-black leading-snug mb-4">
+                        {data.title}
+                    </h1>
+                    <p className="font-sans text-sm text-black/55 leading-relaxed">
+                        {data.smallDescription}
+                    </p>
+                </header>
+
+                {data.titleImage && (
+                    <div className="relative w-full h-[360px] mb-10 overflow-hidden rounded-lg">
+                        <Image
+                            src={urlFor(data.titleImage).url()}
+                            alt={data.title}
+                            fill
+                            priority
+                            className="object-cover"
+                        />
+                    </div>
+                )}
+
+                <article>
+                    <PortableText value={data.content} components={ptComponents} />
+                </article>
+
+            </main>
+        </>
+    );
+}
