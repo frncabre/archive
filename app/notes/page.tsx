@@ -1,8 +1,10 @@
 import Link from "next/link";
 import Navbar from "../components/Navbar";
 import { getAllNotes, type Locale } from "../lib/sanity";
+import { getLocale } from "../lib/locale";
 
-const lang: Locale = "en";
+const lang = await getLocale();
+
 
 const NOTE_TYPE_LABELS: Record<string, Record<Locale, string>> = {
   essay: { es: "Ensayo", en: "Essay", de: "Essay" },

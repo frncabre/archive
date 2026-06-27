@@ -2,8 +2,9 @@ import Link from "next/link";
 import { PortableText } from "@portabletext/react";
 import Navbar from "../components/Navbar";
 import { getSiteSettings, type Locale } from "../lib/sanity";
+import { getLocale } from "../lib/locale";
 
-const lang: Locale = "en";
+const lang = await getLocale();
 
 export default async function AboutPage() {
   const settings = await getSiteSettings(lang);

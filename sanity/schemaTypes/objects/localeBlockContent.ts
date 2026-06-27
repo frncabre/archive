@@ -4,7 +4,13 @@ export default defineType({
   name: 'localeBlockContent',
   title: 'Contenido enriquecido localizado',
   type: 'object',
-  options: {collapsible: true, collapsed: true},
+  options: {
+    collapsible: true,
+    collapsed: true,
+    aiAssist: {
+      translateAction: true,
+    },
+  },
   fields: [
     defineField({
       name: 'es',

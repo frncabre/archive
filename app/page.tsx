@@ -9,8 +9,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { getLocale } from "./lib/locale";
 
-const lang: Locale = "en";
+const lang = await getLocale();
 
 export default async function Home() {
   const notes = await getAllNotes(lang);

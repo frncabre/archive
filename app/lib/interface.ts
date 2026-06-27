@@ -37,3 +37,12 @@ export interface SiteSettingsData {
   contactEmail?: string
   currentSeries?: SeriesRef | null
 }
+
+export interface SeriesDetail {
+  title: string
+  slug: string
+  number: string
+  description: string
+  status: 'active' | 'upcoming' | 'archived'
+  notes: SimpleNoteCard[]
+}

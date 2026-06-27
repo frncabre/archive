@@ -1,8 +1,10 @@
 import Link from "next/link";
 import Navbar from "../components/Navbar";
 import { getAllSeries, type Locale } from "../lib/sanity";
+import { getLocale } from "../lib/locale";
 
-const lang: Locale = "en";
+const lang = await getLocale();
+
 
 export default async function SeriesPage() {
   const seriesList = await getAllSeries(lang);
