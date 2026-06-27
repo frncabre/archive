@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Navbar from "./components/Navbar";
-import { client, urlFor } from "./lib/sanity";
-import { simpleBlogCard } from "./lib/interface";
+import { getAllNotes, urlFor, type Locale } from "./lib/sanity";
 import {
   Card,
   CardContent,
@@ -10,48 +9,51 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getAllData } from "./lib/sanity";
+
+const lang: Locale = "en";
 
 export default async function Home() {
-  const data: simpleBlogCard[] = await getAllData();
+  const notes = await getAllNotes(lang);
 
   return (
     <div>
       <Navbar />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mt-5 gap-5">
-        {data.map((post, idx) => (
-          <Card key={post.currentSlug ?? idx} className="group overflow-hidden flex flex-col">
+        {notes.map((note, idx) => (
+          <Card key={note.currentSlug ?? idx} className="group overflow-hidden flex flex-col">
 
-            {/* Imagen — fuera del CardHeader para que llegue al borde */}
             <div className="relative w-full h-[200px] overflow-hidden">
               <Image
-                src={urlFor(post.titleImage).url()}
-                alt={post.title}
+                src={urlFor(note.titleImage).url()}
+                alt={note.title}
                 fill
                 className="object-cover transition-transform duration-300 group-hover:scale-105"
               />
             </div>
 
-            {/* Título + descripción */}
             <CardHeader className="pb-2">
+              {note.series && (
+                <p className="text-[0.65rem] font-sans tracking-[0.12em] uppercase text-[#d4510a]/70 mb-1">
+                  {note.series.title}
+                </p>
+              )}
               <CardTitle className="text-lg leading-tight line-clamp-2">
-                {post.title}
+                {note.title}
               </CardTitle>
               <CardDescription className="line-clamp-3">
-                {post.smallDescription}
+                {note.excerpt}
               </CardDescription>
             </CardHeader>
 
-            {/* Espacio extra si querés meter más info */}
             <CardContent className="flex-1" />
 
-            {/* Link al fondo */}
             <CardFooter>
+              
               <a
-                href={`/blog/${post.currentSlug}`}
+                href={`/notes/${note.currentSlug}`}
                 className="text-sm font-medium text-primary hover:underline"
               >
-                Leer más →
+                Read more →
               </a>
             </CardFooter>
 
